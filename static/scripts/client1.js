@@ -1,5 +1,5 @@
 /*
-WebLLSE - Web Low Level Synthesizer Experiment
+WebLLSE - Web Low-Level Synthesizer Experiment
 Designed and built by LP
 
 */
@@ -41,6 +41,7 @@ const wrprefab=document.getElementById("wr-prefab");
 const varrprefab=document.getElementById("varr-prefab");
 const exportpbarlabel=document.getElementById("pbarlabel");
 const exportpbarfill=document.getElementById("pbarfill");
+const wavexpfreq=document.getElementById("wavexpfreq");
 mixtrackinst.style.display="none"
 wrprefab.style.display="none"
 varrprefab.style.display="none"
@@ -48,6 +49,12 @@ varrprefab.style.display="none"
 
 import { generateAudioBuffer} from '../audiorun.js';
 import {module as emodule} from '../effect_modules.js';
+
+
+const notenames=[]
+for (let i=0;i<127;i++) {
+  notenames.push(["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"][i%12]+`${Math.floor(i/12)+1}`)
+}
 
 
 function setuniqueid(elmt) {
@@ -455,11 +462,28 @@ function loadfromjson(string) {
     mixtrackcont.appendChild(createmixertrack(mt,json.mixtracks[mt]))
   }
 }
+function sendfiletodownload(blob,filename) {
+  const a=document.createElement("a")
+  a.href=URL.createObjectURL(blob)
+  a.download=filename;
+  a.click()
+}
 
-
-async function generatewav(noteval) {
+async function generatewav(noteval,usetype=0) {
   console.log("generating wav for note "+noteval)
-  keyfrequency[0]=440*2**((noteval-33-24)/12)
+  switch(usetype) {
+    case 0:
+      keyfrequency[0]=440*2**((noteval-33-24)/12)
+      break;
+    case 1:
+      keyfrequency[0]=440*2**(((notenames.indexOf(noteval)+1)-33-24)/12);
+      break;
+    case 2:
+      keyfrequency[0]=noteval;
+      break;
+  }
+
+  
   let buffer=await generatebuffer(false);
   buffer=buffer[0]
 
@@ -553,10 +577,17 @@ function downloadjson() {
     blocksize:blocksizetxt.value,
   }
   const sdata=JSON.stringify(data)
-  const a=document.createElement("a")
-  a.href=URL.createObjectURL(new Blob([sdata],{type:'application/json'}))
-  a.download="synth.json"
-  a.click()
+  
+  sendfiletodownload(new Blob([sdata],{type:'application/json'}),"synth.json")
+  
+}
+async function downloadwav(wfinput) {
+  setexportprogress("Generating file...",0.4);
+  await wait(0.1);
+  const wavdat=await generatewav(wfinput,notenames.includes(wfinput)?1:2);
+  sendfiletodownload(wavdat,"sample.wav");
+  setexportprogress("Completed",0)
+
 }
 {
   const options=[["wav","WAV audio"],["sfz","SFZ soundfont"],["json","JSON data file"]];
@@ -583,6 +614,8 @@ function downloadjson() {
       case "json":
         downloadjson();
         break;
+      case "wav":
+        downloadwav(wavexpfreq.value);
     }
   }
 }

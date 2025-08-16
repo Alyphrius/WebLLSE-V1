@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Jersey+10&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
   <title>Synth - WebLLSE</title>
   <style>
     body {
@@ -253,12 +254,12 @@
 }
 #exportlb {
   color:#ffffff;
-  font-size: 20px
-
+  font-size: 20px;
+  width:20%;
 }
 #exportdesc {
   color:#fff;
-  max-width:30vw;
+  max-width:20vw;
 }
 .filebtn {
   height:10%
@@ -505,6 +506,24 @@
   width:0%;
   background-color:#ff0000;
 }
+.textinputclass {
+  background-color:#222222;
+  color:#ffffff;
+
+  font-family:"Google Sans Code";
+  font-size:12px;
+  border-color:black;
+  
+}
+.textinputclass::placeholder {
+  color:#999999;
+}
+#wavexpcont {
+ 
+}
+#welbl1 {
+  color:white;
+}
   </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/topbarstyle.css') }}">
 
@@ -516,7 +535,7 @@
   </nav>
 
 
-  <h1 class="titlething">WebLLSE: Browser-Based Low-Level Synthesizer Experiment - <span style="color:red">IN DEVELOPMENT.</span></h1>
+  <h1 class="titlething">WebLLSE: Web-Based Low-Level Synthesizer Experiment</h1>
    <div id="synthbodywrap">
 
   
@@ -528,10 +547,10 @@
           <button class="remove-btn">X</button>
           <button class="util-btn">E</button>
           <select class="waveformselect" value="sine"></select>
-          <input class="freqinput waveinp" placeholder="Frequency (Hz)"></input>
-          <input class="ampinput waveinp" placeholder="Amplitude (-1 - 1)"></input>
-          <input class="paninput waveinp" placeholder="Panning (-1 - 1)"></input>
-          <input class="fxcinput waveinp" placeholder="Mixer Track"></input>
+          <input class="freqinput waveinp textinputclass" placeholder="Frequency (Hz)"></input>
+          <input class="ampinput waveinp textinputclass" placeholder="Amplitude (-1 - 1)"></input>
+          <input class="paninput waveinp textinputclass" placeholder="Panning (-1 - 1)"></input>
+          <input class="fxcinput waveinp textinputclass" placeholder="Mixer Track"></input>
           <button class="addmodbtn">+Modifier</button>
         </div>
       </div>
@@ -541,8 +560,8 @@
         <button class="remove-btn">X</button>
           <button class="util-btn">E</button>
           <select class="vartypeselect"></select>
-          <input class="var-name-input" placeholder="ID"></input>
-          <input class="var-value-input" placeholder="Value"></input>
+          <input class="var-name-input textinputclass" placeholder="ID"></input>
+          <input class="var-value-input textinputclass" placeholder="Value"></input>
       </div>
     </div>
     </div>
@@ -579,8 +598,8 @@
         </button>
         </div>
         <div id="fxi1prop" class="fxpropc">
-          <div id="fxi1plabel" class="fxproplabel">Property Name</div>
-          <input id="fxi1pvalue" class="fxpropvalue" type="text"></input>
+          <div id="fxi1plabel" class="fxproplabel textinputclass">Property Name</div>
+          <input id="fxi1pvalue" class="fxpropvalue textinputclass" type="text"></input>
         </div>
       </div>
     </div>
@@ -594,8 +613,8 @@
         <button id="remv" class="fxiremvbtn">
           X
         </button>
-        <input id="mixtkpn" class="mixtki" placeholder="ID"></input>
-        <input id="mixtkpe" class="mixtki" placeholder="Effect chain"></input>
+        <input id="mixtkpn" class="mixtki textinputclass" placeholder="ID"></input>
+        <input id="mixtkpe" class="mixtki textinputclass" placeholder="Effect chain"></input>
       </div>
     </div>
   </div>
@@ -659,8 +678,12 @@
   <div id="wrap3" style="width:40%;height:100%">
 <div id="exportlb">File</div>
   <select id="exportselect"></select>
-  <div id="exportdesc">Select</div>
+  <div id="exportdesc"></div>
     
+  </div>
+  <div id="wavexpcont">
+    <div id="welbl1">Note or $F# value (e.g. A#4 or 466.16):</div>
+    <input id="wavexpfreq" class="textinputclass">440</input>
   </div>
   <button id="exportbtn" class="filebtn">Export</button>
   <button id="importbtn" class="filebtn">Import</button>
